@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+{% block body %}
+<header>
+	<nav>
+		<a href="{{ url_for('index.index') }}"><img src="{{ url_for('static', filename='pictures/logo.png') }}" style="width:200px" alt="" /></a>
+		<ul>
+			<li class="menuItem"><a href="{{ url_for('index.index') }}">Home</a></li>
+			<li class="menuItem"><a href="{{ url_for('index.about') }}">About Us</a></li>
+			{% if not session.get('logged_in') %}
+			<li class="menuItem"><a href="{{ url_for('user.registration') }}">Register</a></li>
+			<li class="menuItem"><a href="{{ url_for('user.login') }}">Login</a></li>
+			{% elif session.get('user_id') %}
+			<li class="menuItem active"><a href="{{ url_for('user.profile') }}">Profile</a></li>
+			<li class="menuItem"><a href="{{ url_for('user.logout') }}">Logout</a></li>
+			{% else %}
+			<li class="menuItem"><a href="{{ url_for('hospital.manage') }}">Manage</a></li>
+			<li class="menuItem"><a href="{{ url_for('hospital.logout') }}">Logout</a></li>
+			{% endif %}
+			<li class="menuItem"><a href="{{ url_for('index.contacts') }}">Contact Us</a></li>
+		</ul>
+	</nav>
+</header>
+
+
+<div class="form">
+	<h1>Profile</h1>
+	<form class="cmxform" id="signupForm" action="{{ url_for('user.profile') }}" method="post">
+
+		<div class="formitem">	
+			<p>
+				<label for="last_donation">Date of last blood donation: </label></br>
+				<label>25/02/2012</label>
+			</p>
+		</div>
+
+		<div class="formitem">
+			<hr>
+			<p>
+				<label for="email">Email : </label></br>
+				<label>{{ user.email }}</label>
+			</p>
+		</div>
+
+		<div class="formitem">
+			<hr>
+			<p>
+				<label for="name">Name : </label></br>
+				<label>{{ user.name }}</label>
+			</p>
+		</div>
+
+		<div class="formitem">
+			<hr>
+			<p>
+				<label for="blood_type">Blood Type : </label></br>
+				<label>{{ user.blood_type }}</label>
+			</p> 
+		</div>
+
+		<div class="formitem">
+			<hr>
+			<p>
+				<label for="phone">Phone Number : </label></br>
+				<input id="phone" name="phone"  value="{{ user.phone }}" type="text" placeholder="+5555555555">
+			</p>
+			<hr>	 
+		</div>
+
+		<div class="formitem">
+			<p>
+				<label for="neighborhood">Neighborhood: </label></br>
+				<select name="neighborhood">
+					{% for city in ["Al Aman", "Al Bateen", "Al Dhafrah", "Al Falah", "Al Karama", "Al Khubeirah", "Al Lulu Island", "Al Madina", "Al Manaseer", "Al Manhal", "Al Maqtaa", "Al Markaziyah", "Al Meena","Al Moroor","Al Mushrif","Al Muzoon","Al Nahyan"] %}
+						<option {% if city == user.neighborhood %} selected="selected" {% endif %} value={{ city }}>{{ city }}</option>
+					{% endfor %}
+				</select>
+			</p>
+			<hr>	 
+		</div>
+		
+		<div class="formitem">
+			<p>
+				<label for="city">City: </label></br>
+				<select name="city">
+					<option value="Abu Dhabi">Abu Dhabi</option>
+				</select>
+			</p>
+		</div>
+
+		<p>
+			<input type="submit" value="Submit Changes" name="Sinscrire" class="iscrit" style="float : right; margin-top : 100px">
+		</p>
+	</form>
+</div>
+{% endblock %}

@@ -1,9 +1,12 @@
 # ADDED
 .DS_Store
 venv/
+ven/
+virtual/
 Include
 Lib
 Scripts
+app.db
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

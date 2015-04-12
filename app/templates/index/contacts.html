@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block body %}
+	<header>
+		<nav>
+			<a href="{{ url_for('index.index') }}"><img src="{{ url_for('static', filename='pictures/logo.png') }}" style="width:200px" alt="" /></a>
+			<ul>
+				<li class="menuItem"><a href="{{ url_for('index.index') }}">Home</a></li>
+				<li class="menuItem"><a href="{{ url_for('index.about') }}">About Us</a></li>
+				{% if not session.get('logged_in') %}
+					<li class="menuItem"><a href="{{ url_for('user.registration') }}">Register</a></li>
+					<li class="menuItem"><a href="{{ url_for('user.login') }}">Login</a></li>
+				{% elif session.get('user_id') %}
+					<li class="menuItem"><a href="{{ url_for('user.profile') }}">Profile</a></li>
+					<li class="menuItem"><a href="{{ url_for('user.logout') }}">Logout</a></li>
+				{% else %}
+					<li class="menuItem"><a href="{{ url_for('hospital.manage') }}">Manage</a></li>
+					<li class="menuItem"><a href="{{ url_for('hospital.logout') }}">Logout</a></li>
+				{% endif %}
+				<li class="menuItem active"><a href="{{ url_for('index.contacts') }}">Contact Us</a></li>
+			</ul>
+		</nav>
+	</header>
+
+	<div class="form">
+    	<h1> Contact Us</h1>
+		<p >If you need further information or have any concerns please email us at: info@singledrop.com</p>
+		<p>Telephone Number: +971 2 566 3260</p>
+		<p>Single Drop</p>
+		<p>Al – Salam Building</p>
+		<p>Abu Dhabi, UAE</p>
+	</div>
+
+{% endblock %}

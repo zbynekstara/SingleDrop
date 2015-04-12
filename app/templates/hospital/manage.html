@@ -1,0 +1,153 @@
+{% extends "layout.html" %}
+{% block body %}
+<header>
+	<nav>
+		<a href="{{ url_for('index.index') }}"><img src="{{ url_for('static', filename='pictures/logo.png') }}" style="width:200px" alt="" /></a>
+		<ul>
+			<li class="menuItem"><a href="{{ url_for('index.index') }}">Home</a></li>
+			<li class="menuItem"><a href="{{ url_for('index.about') }}">About Us</a></li>
+			{% if not session.get('logged_in') %}
+			<li class="menuItem"><a href="{{ url_for('user.registration') }}">Register</a></li>
+			<li class="menuItem"><a href="{{ url_for('user.login') }}">Login</a></li>
+			{% elif session.get('user_id') %}
+			<li class="menuItem"><a href="{{ url_for('user.profile') }}">Profile</a></li>
+			<li class="menuItem"><a href="{{ url_for('user.logout') }}">Logout</a></li>
+			{% else %}
+			<li class="menuItem active"><a href="{{ url_for('hospital.manage') }}">Manage</a></li>
+			<li class="menuItem"><a href="{{ url_for('hospital.logout') }}">Logout</a></li>
+			{% endif %}
+			<li class="menuItem"><a href="{{ url_for('index.contacts') }}">Contact Us</a></li>
+		</ul>
+	</nav>
+</header>
+
+<div class="form">
+	<h1>Find Donors</h1>
+	<form class="cmxform" id="searchForm" action="{{ url_for('hospital.manage') }}" method="post">
+		<div style="clear : both">
+			<p>
+				<label for="blood">Blood Type</label></br>
+					<select name="blood">
+						{% for blood in ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"] %}
+							<option {% if blood_type == blood %} selected="selected" {% endif %} value={{ blood }}>{{ blood }}</option>
+						{% endfor %}
+					</select>
+				</label>
+			</p>
+		</div>
+		<p style="clear:both">
+			<input type="submit" value="Search" name="Search" class="iscrit" style="margin-top : 0%">
+		</p>
+		<div style="clear : both">
+			<hr style="margin-right:28%">       
+		</div>
+	</form>
+</div>
+<div class="form">
+	{% if not users %}
+		<h1>No donorsfound</h1>
+	{% else %}
+		<table style="border-color:black">
+			<thead>
+				<tr>
+					<th width="7%">
+						<p>
+							<label for="name">Name: </label></br>
+						</p>
+					</th>
+					<th width="7%">
+						<p>
+							<label for="blood_type">Blood Type: </label></br>
+						</p>
+					</th>
+					<th width="7%">
+						<p>
+							<label for="neighborhood">Neighborhood: </label></br>
+						</p>
+					</th>
+					<th width="7%">
+						<p>
+							<label for="city">City: </label></br>
+						</p>
+					</th>
+					<th width="7%" colspan=2>
+						<p>
+							<label for="phone">Phone: </label></br>
+						</p>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for u in users %}
+				<tr>
+					<td width="100px">
+						<p>
+							<label>{{ u.name }}</label></br>
+						</p>
+					</td>
+					<td width="100px">
+						<p>
+							<label>{{ u.blood_type }}</label></br>
+						</p>
+					</td>
+					<td width="100px">
+						<p>
+							<label>{{ u.neighborhood }}</label></br>
+						</p>
+					</td>
+					<td width="100px">
+						<p>
+							<label>{{ u.city }}</label></br>
+						</p>
+					</td>
+					<td width="100px">
+						<p>
+							<label>{{ u.phone }}</label></br>
+						</p>
+					</td>
+					<td width="100px">
+						<p>
+							<button type="submit" onclick="send_message({{u.phone}});"><div class="contact">Message</div></button>
+						</p>
+					</td>
+					<td width="100px">
+						<p>
+							<button type="submit" onclick="make_call({{u.phone}});"><div class="contact">Call</div></button>
+						</p>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endif %}
+</div>
+
+<script type="text/javascript">
+var send_message = function(phone_number){
+	$.ajax({
+		url: "/api/message/" + "+" + phone_number,
+		type: "get",
+		dataType: 'json',
+		success: function(data){
+			window.alert('Message sent!');
+		},
+		error: function(jqXHR){
+			window.alert('Message sent!');
+		}
+	});
+};
+var make_call = function(phone_number){
+	$.ajax({
+		url: "/api/call/" + "+" + phone_number,
+		type: "get",
+		dataType: 'json',
+		success: function(data){
+			window.alert('Calling');
+		},
+		error: function(jqXHR){
+			window.alert('Message sent!');
+		}
+	});
+};
+</script>
+{% endblock %}

@@ -1,17 +1,20 @@
-<!doctype html>
-<title>SingleDrop</title>
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
-<div class=page>
-  <h1>SingleDrop</h1>
-  <div class=metanav>
-  {% if not session.logged_in %}
-    <a href="localhost:5000/login">log in</a>
-  {% else %}
-    <a href="localhost:5000/logout">log out</a>
-  {% endif %}
-  </div>
-  {% for message in get_flashed_messages() %}
-    <div class=flash>{{ message }}</div>
-  {% endfor %}
-  {% block body %}{% endblock %}
-</div>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Single Drop</title>
+	<link type="text/css" href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" />
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<link type="text/css" href="{{ url_for('static', filename='slideshow.css') }}" rel="stylesheet" />
+	<link type="text/css" href="{{ url_for('static', filename='core.css') }}" rel="stylesheet" />
+
+</head>
+<body>
+
+{% for message in get_flashed_messages() %}
+	<div class="flash" style="float: right; margin-right:3%; margin-top:3%; font-weight:sbold;">{{ message }}</div>
+{% endfor %}
+
+{% block body %}{% endblock %}
+<script type="text/javascript" src="{{ url_for('static', filename='jquery-2.1.3.min.js') }}"></script>
+</body>
+</html>
